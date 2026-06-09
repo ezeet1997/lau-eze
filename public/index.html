@@ -13,7 +13,7 @@
     <div class="login-card">
       <p class="tag">App privada</p>
       <h1>🏆 Laura vs Eze</h1>
-      <p class="subtitle">Desafíos, juegos, fotos, audios, videos y ranking.</p>
+      <p class="subtitle">Desafíos, juegos con niveles, cámara, fotos, audios, videos y ranking.</p>
       <form id="loginForm" class="auth-form">
         <label>Usuario</label><input id="username" type="text" placeholder="eze o lau" required>
         <label>Clave</label><input id="password" type="password" placeholder="Clave" required>
@@ -31,10 +31,10 @@
       </div>
       <p class="tag">Juego privado para no aburrirse</p>
       <h1>🏆 Laura vs Eze</h1>
-      <p class="subtitle">Desafíos, ruleta, juegos, ranking y recuerdos compartidos.</p>
+      <p class="subtitle">Desafíos, ruleta, juegos con dificultad progresiva y recuerdos compartidos.</p>
       <nav class="nav">
         <a href="#perfil">Perfil</a><a href="#ranking">Ranking</a><a href="#desafios">Desafíos</a>
-        <a href="#aburrimiento">Aburrimiento 0%</a><a href="#juegos">Juegos</a><a href="#galeria">Galería</a>
+        <a href="#aburrimiento">Aburrimiento 0%</a><a href="#fotos">Fotos</a><a href="#juegos">Juegos</a><a href="#galeria">Galería</a>
       </nav>
     </header>
 
@@ -45,7 +45,7 @@
           <div class="profile-row">
             <img id="myAvatar" class="avatar-img" src="" alt="avatar">
             <form id="avatarForm" class="post-form compact">
-              <input type="file" name="avatar" accept="image/*" required>
+              <input type="file" name="avatar" accept="image/*" capture="user" required>
               <button class="btn small" type="submit">Guardar foto de perfil</button>
             </form>
           </div>
@@ -88,14 +88,15 @@
       </section>
 
       <section id="fotos" class="section">
-        <div class="section-title"><span>📷</span><div><h2>Desafíos de fotos</h2><p>Reto de foto para ambos.</p></div></div>
+        <div class="section-title"><span>📷</span><div><h2>Desafíos de fotos</h2><p>Podés abrir la cámara directamente desde el celular.</p></div></div>
         <article class="card photo-card">
           <div id="photoChallenge" class="big-result">📷 Sacate una foto con algo azul</div>
           <button class="btn secondary" onclick="newPhotoChallenge()">Nuevo desafío</button>
           <form class="post-form" data-section="fotos" data-points="15">
             <input type="hidden" name="challenge" id="photoInput">
             <textarea name="text" placeholder="Comentario de la foto..."></textarea>
-            <input type="file" name="file" accept="image/*">
+            <label class="file-label">📸 Abrir cámara o elegir foto</label>
+            <input type="file" name="file" accept="image/*" capture="environment">
             <button class="btn small" type="submit">Subir foto</button>
           </form>
           <h3>Fotos</h3><div id="posts-fotos" class="posts"></div>
@@ -103,42 +104,75 @@
       </section>
 
       <section id="juegos" class="section">
-        <div class="section-title"><span>🎮</span><div><h2>Juegos</h2><p>Más juegos con puntos y récords.</p></div></div>
+        <div class="section-title"><span>🎮</span><div><h2>Juegos con niveles</h2><p>La dificultad sube mientras avanzás.</p></div></div>
 
         <article class="card game-card">
           <h3>🍦 Atrapa helados</h3>
-          <div class="game-info"><span>Puntos: <b id="iceScore">0</b></span><span>Tiempo: <b id="iceTime">30</b>s</span></div>
+          <p>Sube la velocidad por nivel.</p>
+          <div class="game-info"><span>Puntos: <b id="iceScore">0</b></span><span>Nivel: <b id="iceLevel">1</b></span><span>Tiempo: <b id="iceTime">30</b>s</span></div>
           <canvas id="iceGame" width="420" height="520"></canvas>
-          <div class="game-actions"><button class="btn primary" onclick="startIceGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-helados', iceBestUnsaved, Math.min(50, iceBestUnsaved))">Guardar récord</button></div>
+          <div class="game-actions"><button class="btn primary" onclick="startIceGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-helados', iceBestUnsaved, Math.min(80, iceBestUnsaved))">Guardar récord</button></div>
           <div id="scores-atrapa-helados" class="posts"></div>
         </article>
 
         <article class="card game-card">
           <h3>💖 Atrapa corazones</h3>
-          <p>Igual al helado, pero con corazones. Evitá las bombas 💣.</p>
-          <div class="game-info"><span>Puntos: <b id="heartScore">0</b></span><span>Tiempo: <b id="heartTime">30</b>s</span></div>
+          <p>Sumá corazones y evitá bombas. Aparecen más bombas por nivel.</p>
+          <div class="game-info"><span>Puntos: <b id="heartScore">0</b></span><span>Nivel: <b id="heartLevel">1</b></span><span>Tiempo: <b id="heartTime">30</b>s</span></div>
           <canvas id="heartGame" width="420" height="520"></canvas>
-          <div class="game-actions"><button class="btn primary" onclick="startCatchGame('heart')">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-corazones', heartBestUnsaved, Math.min(60, heartBestUnsaved))">Guardar récord</button></div>
+          <div class="game-actions"><button class="btn primary" onclick="startHeartGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-corazones', heartBestUnsaved, Math.min(90, heartBestUnsaved))">Guardar récord</button></div>
           <div id="scores-atrapa-corazones" class="posts"></div>
         </article>
 
         <article class="card game-card">
+          <h3>⭐ Atrapa estrellas</h3>
+          <p>Las estrellas doradas suman más. Las nubes restan.</p>
+          <div class="game-info"><span>Puntos: <b id="starScore">0</b></span><span>Nivel: <b id="starLevel">1</b></span><span>Tiempo: <b id="starTime">30</b>s</span></div>
+          <canvas id="starGame" width="420" height="520"></canvas>
+          <div class="game-actions"><button class="btn primary" onclick="startStarGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-estrellas', starBestUnsaved, Math.min(100, starBestUnsaved))">Guardar récord</button></div>
+          <div id="scores-atrapa-estrellas" class="posts"></div>
+        </article>
+
+        <article class="card game-card">
           <h3>⚡ Click rápido</h3>
-          <p>Hacé la mayor cantidad de clicks en 10 segundos.</p>
+          <p>Cada nivel dura menos tiempo y pide más velocidad.</p>
+          <div class="game-info"><span>Nivel: <b id="clickLevel">1</b></span><span>Tiempo: <b id="clickTime">10</b>s</span></div>
           <div class="big-result" id="clickScore">0 clicks</div>
           <button class="btn primary big" id="clickBtn" onclick="clickGameTap()">Empezar</button>
-          <button class="btn secondary" onclick="saveGameScore('click-rapido', clickBestUnsaved, Math.min(40, clickBestUnsaved))">Guardar récord</button>
+          <button class="btn secondary" onclick="saveGameScore('click-rapido', clickBestUnsaved, Math.min(80, clickBestUnsaved))">Guardar récord</button>
           <div id="scores-click-rapido" class="posts"></div>
         </article>
 
         <article class="card game-card">
           <h3>🧠 Memoria de emojis</h3>
-          <p>Encontrá las parejas.</p>
+          <p>Aumenta la cantidad de cartas por nivel.</p>
+          <div class="game-info"><span>Nivel: <b id="memoryLevel">1</b></span><span>Movimientos: <b id="memoryMoves">0</b></span></div>
           <button class="btn primary" onclick="startMemoryGame()">Nuevo juego</button>
           <div id="memoryBoard" class="memory-board"></div>
-          <div id="memoryStatus" class="result">Movimientos: 0</div>
-          <button class="btn secondary" onclick="saveGameScore('memoria-emojis', memoryBestUnsaved, Math.max(5, 60 - memoryBestUnsaved))">Guardar puntaje</button>
+          <div id="memoryStatus" class="result">Ganás más puntos si usás pocos movimientos.</div>
+          <button class="btn secondary" onclick="saveGameScore('memoria-emojis', memoryBestUnsaved, Math.max(10, 120 - memoryBestUnsaved))">Guardar puntaje</button>
           <div id="scores-memoria-emojis" class="posts"></div>
+        </article>
+
+        <article class="card game-card">
+          <h3>🎯 Toca el objetivo</h3>
+          <p>El objetivo se achica y se mueve más rápido.</p>
+          <div class="game-info"><span>Puntos: <b id="targetScore">0</b></span><span>Nivel: <b id="targetLevel">1</b></span><span>Tiempo: <b id="targetTime">25</b>s</span></div>
+          <div id="targetArena" class="target-arena"><button id="targetDot" onclick="hitTarget()">🎯</button></div>
+          <div class="game-actions"><button class="btn primary" onclick="startTargetGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('toca-objetivo', targetBestUnsaved, Math.min(100, targetBestUnsaved))">Guardar récord</button></div>
+          <div id="scores-toca-objetivo" class="posts"></div>
+        </article>
+
+        <article class="card game-card">
+          <h3>🧮 Verdadero o falso</h3>
+          <p>Preguntas rápidas. Sube la dificultad.</p>
+          <div class="game-info"><span>Puntos: <b id="tfScore">0</b></span><span>Nivel: <b id="tfLevel">1</b></span></div>
+          <div id="tfQuestion" class="big-result">Tocá empezar</div>
+          <button class="btn primary" onclick="startTFGame()">Empezar</button>
+          <button class="btn secondary" onclick="answerTF(true)">Verdadero</button>
+          <button class="btn secondary" onclick="answerTF(false)">Falso</button>
+          <button class="btn secondary" onclick="saveGameScore('verdadero-falso', tfBestUnsaved, Math.min(100, tfBestUnsaved * 5))">Guardar récord</button>
+          <div id="scores-verdadero-falso" class="posts"></div>
         </article>
 
         <article class="card">

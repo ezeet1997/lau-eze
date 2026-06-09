@@ -148,9 +148,7 @@ function deleteUploadFile(fileUrl) {
   if (!fileUrl) return;
   const clean = fileUrl.replace(/^\/uploads\//, "");
   const fullPath = path.join(UPLOAD_DIR, clean);
-  if (fullPath.startsWith(UPLOAD_DIR) && fs.existsSync(fullPath)) {
-    fs.unlinkSync(fullPath);
-  }
+  if (fullPath.startsWith(UPLOAD_DIR) && fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
 }
 
 app.post("/api/login", (req, res) => {
@@ -159,13 +157,7 @@ app.post("/api/login", (req, res) => {
   if (!user || !bcrypt.compareSync(String(password || ""), user.password_hash)) {
     return res.status(401).json({ ok: false, message: "Usuario o clave incorrectos" });
   }
-  req.session.user = {
-    id: user.id,
-    username: user.username,
-    displayName: user.display_name,
-    avatarUrl: user.avatar_url,
-    points: user.points
-  };
+  req.session.user = { id: user.id, username: user.username, displayName: user.display_name, avatarUrl: user.avatar_url, points: user.points };
   res.json({ ok: true, user: req.session.user });
 });
 
@@ -183,10 +175,8 @@ app.post("/api/profile/avatar", requireLogin, upload.single("avatar"), (req, res
     fs.unlinkSync(req.file.path);
     return res.status(400).json({ ok: false, message: "El avatar tiene que ser una imagen." });
   }
-
   const user = db.prepare("SELECT avatar_url FROM users WHERE id = ?").get(req.session.user.id);
   if (user?.avatar_url) deleteUploadFile(user.avatar_url);
-
   const fileUrl = `/uploads/fotos/${req.file.filename}`;
   db.prepare("UPDATE users SET avatar_url = ? WHERE id = ?").run(fileUrl, req.session.user.id);
   const fresh = refreshSessionUser(req);
@@ -194,10 +184,7 @@ app.post("/api/profile/avatar", requireLogin, upload.single("avatar"), (req, res
 });
 
 app.get("/api/ranking", requireLogin, (req, res) => {
-  const users = db.prepare(`
-    SELECT username, display_name AS displayName, points, avatar_url AS avatarUrl
-    FROM users ORDER BY points DESC
-  `).all();
+  const users = db.prepare("SELECT username, display_name AS displayName, points, avatar_url AS avatarUrl FROM users ORDER BY points DESC").all();
   res.json({ ok: true, users });
 });
 
@@ -205,25 +192,16 @@ app.get("/api/posts", requireLogin, (req, res) => {
   const section = req.query.section || "";
   const params = [];
   let where = "";
-
-  if (section) {
-    where = "WHERE p.section = ?";
-    params.push(section);
-  }
-
+  if (section) { where = "WHERE p.section = ?"; params.push(section); }
   const posts = db.prepare(`
-    SELECT 
-      p.id, p.section, p.challenge, p.text,
-      p.file_url AS fileUrl, p.file_type AS fileType, p.file_name AS fileName,
-      p.points, p.created_at AS createdAt,
-      u.username, u.display_name AS displayName, u.avatar_url AS avatarUrl
-    FROM posts p
-    JOIN users u ON u.id = p.user_id
+    SELECT p.id, p.section, p.challenge, p.text, p.file_url AS fileUrl, p.file_type AS fileType,
+           p.file_name AS fileName, p.points, p.created_at AS createdAt,
+           u.username, u.display_name AS displayName, u.avatar_url AS avatarUrl
+    FROM posts p JOIN users u ON u.id = p.user_id
     ${where}
     ORDER BY p.id DESC
     LIMIT 300
   `).all(...params);
-
   res.json({ ok: true, posts, currentUserId: req.session.user.id });
 });
 
@@ -233,25 +211,18 @@ app.post("/api/posts", requireLogin, upload.single("file"), (req, res) => {
   const challenge = String(req.body.challenge || "");
   const text = String(req.body.text || "");
   const points = Number(req.body.points || 5);
-
   let fileUrl = null, fileType = null, fileName = null;
-
   if (req.file) {
     const folder = getUploadFolder(req.file.mimetype);
     fileUrl = `/uploads/${folder}/${req.file.filename}`;
     fileType = getFileKind(req.file.mimetype);
     fileName = req.file.originalname;
   }
-
-  if (!text.trim() && !fileUrl) {
-    return res.status(400).json({ ok: false, message: "Tenés que escribir algo o subir un archivo." });
-  }
-
+  if (!text.trim() && !fileUrl) return res.status(400).json({ ok: false, message: "Tenés que escribir algo o subir un archivo." });
   const info = db.prepare(`
     INSERT INTO posts (user_id, section, challenge, text, file_url, file_type, file_name, points)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `).run(user.id, section, challenge, text, fileUrl, fileType, fileName, points);
-
   addPoints(user.id, points);
   refreshSessionUser(req);
   res.json({ ok: true, id: info.lastInsertRowid });
@@ -261,11 +232,7 @@ app.delete("/api/posts/:id", requireLogin, (req, res) => {
   const id = Number(req.params.id);
   const post = db.prepare("SELECT * FROM posts WHERE id = ?").get(id);
   if (!post) return res.status(404).json({ ok: false, message: "No encontrado" });
-
-  if (post.user_id !== req.session.user.id) {
-    return res.status(403).json({ ok: false, message: "Solo podés borrar tus propias publicaciones." });
-  }
-
+  if (post.user_id !== req.session.user.id) return res.status(403).json({ ok: false, message: "Solo podés borrar tus propias publicaciones." });
   if (post.file_url) deleteUploadFile(post.file_url);
   db.prepare("DELETE FROM posts WHERE id = ?").run(id);
   removePoints(req.session.user.id, post.points);
@@ -279,7 +246,6 @@ app.post("/api/game-score", requireLogin, (req, res) => {
   const score = Number(req.body.score || 0);
   const points = Number(req.body.points || 0);
   const meta = JSON.stringify(req.body.meta || {});
-
   db.prepare("INSERT INTO game_scores (user_id, game, score, points, meta) VALUES (?, ?, ?, ?, ?)")
     .run(user.id, game, score, points, meta);
   addPoints(user.id, points);
@@ -291,22 +257,15 @@ app.get("/api/game-scores", requireLogin, (req, res) => {
   const game = req.query.game || "";
   const params = [];
   let where = "";
-
-  if (game) {
-    where = "WHERE gs.game = ?";
-    params.push(game);
-  }
-
+  if (game) { where = "WHERE gs.game = ?"; params.push(game); }
   const scores = db.prepare(`
     SELECT gs.id, gs.game, gs.score, gs.points, gs.meta, gs.created_at AS createdAt,
            u.username, u.display_name AS displayName, u.avatar_url AS avatarUrl
-    FROM game_scores gs
-    JOIN users u ON u.id = gs.user_id
+    FROM game_scores gs JOIN users u ON u.id = gs.user_id
     ${where}
     ORDER BY gs.score DESC, gs.id DESC
     LIMIT 100
   `).all(...params);
-
   res.json({ ok: true, scores });
 });
 
@@ -314,17 +273,12 @@ app.delete("/api/game-scores/:id", requireLogin, (req, res) => {
   const id = Number(req.params.id);
   const score = db.prepare("SELECT * FROM game_scores WHERE id = ?").get(id);
   if (!score) return res.status(404).json({ ok: false, message: "No encontrado" });
-  if (score.user_id !== req.session.user.id) {
-    return res.status(403).json({ ok: false, message: "Solo podés borrar tus propios puntajes." });
-  }
+  if (score.user_id !== req.session.user.id) return res.status(403).json({ ok: false, message: "Solo podés borrar tus propios puntajes." });
   db.prepare("DELETE FROM game_scores WHERE id = ?").run(id);
   removePoints(req.session.user.id, score.points);
   refreshSessionUser(req);
   res.json({ ok: true });
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 app.listen(PORT, () => console.log(`Laura vs Eze running on port ${PORT}`));
