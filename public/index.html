@@ -63,7 +63,29 @@
         </div>
         <button class="btn primary" onclick="showView('today')">Ver lo de hoy</button>
       </div>
+<article class="card">
+  <h2>👤 Mi Perfil</h2>
 
+  <div style="text-align:center;">
+    <img id="profileAvatar" class="profile-avatar" src="">
+
+    <h3 id="profileName"></h3>
+
+    <form id="avatarForm" enctype="multipart/form-data">
+      <input
+        type="file"
+        name="avatar"
+        accept="image/*"
+        capture="user"
+        required
+      >
+
+      <button type="submit" class="btn primary">
+        📷 Cambiar Foto
+      </button>
+    </form>
+  </div>
+</article>
       <div id="rankingBox" class="ranking-grid"></div>
 
       <div class="dashboard-grid">
