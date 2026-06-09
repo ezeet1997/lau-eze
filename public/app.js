@@ -10,6 +10,35 @@ let clickActive=false,clickCount=0,memoryState={cards:[],open:[],matched:0,moves
 
 loginForm.addEventListener("submit",async e=>{e.preventDefault();const d=await (await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:username.value.trim().toLowerCase(),password:password.value})})).json();if(!d.ok){loginMsg.textContent=d.message;return}currentUser=d.user;showApp()});
 logoutBtn.addEventListener("click",async()=>{await fetch("/api/logout",{method:"POST"});location.reload()});
+document.addEventListener("submit", async e => {
+
+    if(e.target.id === "avatarForm"){
+
+        e.preventDefault();
+
+        const fd = new FormData(e.target);
+
+        const r = await fetch("/api/profile/avatar",{
+            method:"POST",
+            body:fd
+        });
+
+        const d = await r.json();
+
+        if(!d.ok){
+            alert(d.message || "Error al subir foto");
+            return;
+        }
+
+        currentUser = d.user;
+
+        updateUser();
+
+        await loadRanking();
+
+        alert("✅ Foto actualizada");
+    }
+});
 document.addEventListener("submit",async e=>{if(e.target.classList.contains("post-form")){e.preventDefault();await submitPost(e.target)}if(e.target.classList.contains("item-form")){e.preventDefault();await submitItem(e.target)}});
 function showView(name){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(`view-${name}`)?.classList.add("active");pageTitle.textContent=({home:"Inicio",today:"Hoy",feed:"Feed",games:"Juegos",media:"Subir",watch:"Pelis/Series",music:"Música",travel:"Viajes",memories:"Recuerdos",surprises:"Sorpresas",more:"Más",memes:"Memes",trivia:"Trivia",stats:"Estadísticas",gallery:"Galería"})[name]||"Laura vs Eze";window.scrollTo(0,0);if(name==="feed")loadFeed();if(name==="stats")loadStats()}
 async function checkSession(){const d=await (await fetch("/api/me")).json();if(d.user){currentUser=d.user;showApp()}}
