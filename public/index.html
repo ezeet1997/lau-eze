@@ -2,52 +2,192 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laura vs Eze V4</title><link rel="stylesheet" href="/styles.css">
+  <title>Laura vs Eze V5</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <div class="bg-glow glow-1"></div><div class="bg-glow glow-2"></div>
+
 <section id="loginScreen" class="login-screen">
-  <div class="login-card"><p class="tag">App privada</p><h1>🏆 Laura vs Eze</h1><p class="subtitle">Red social privada para dos: juegos, desafíos, viajes, música, pelis y recuerdos.</p>
-    <form id="loginForm" class="auth-form"><label>Usuario</label><input id="username" placeholder="eze o lau" required><label>Clave</label><input id="password" type="password" required><button class="btn primary full">Entrar</button></form><p id="loginMsg" class="auth-message"></p>
+  <div class="login-card">
+    <p class="tag">App privada</p>
+    <h1>❤️ Laura vs Eze</h1>
+    <p class="subtitle">Dashboard, feed, juegos, desafíos, viajes, música, pelis y recuerdos.</p>
+    <form id="loginForm" class="auth-form">
+      <label>Usuario</label><input id="username" placeholder="eze o lau" required>
+      <label>Clave</label><input id="password" type="password" required>
+      <button class="btn primary full">Entrar</button>
+    </form>
+    <p id="loginMsg" class="auth-message"></p>
   </div>
 </section>
+
 <div id="app" class="hidden">
-<header class="hero"><div class="topbar"><span id="currentUserLabel"></span><button id="logoutBtn" class="logout-btn">Salir</button></div><p class="tag">Solo Lau y Eze</p><h1>🏆 Laura vs Eze</h1><p class="subtitle">Todo lo anterior + misiones, logros, viajes, watchlist, playlist, recuerdos, memes, sorpresas y estadísticas.</p>
-<nav class="nav">
-<a href="#perfil">Perfil</a><a href="#ranking">Ranking</a><a href="#misiones">Misiones</a><a href="#desafios">Desafíos</a><a href="#juegos">Juegos</a><a href="#watchlist">Watchlist</a><a href="#playlist">Playlist</a><a href="#viajes">Viajes</a><a href="#recuerdos">Recuerdos</a><a href="#memes">Memes</a><a href="#sorpresas">Sorpresas</a><a href="#stats">Stats</a>
-</nav></header>
-<main>
-<section id="perfil" class="section"><div class="section-title"><span>👤</span><div><h2>Perfil</h2><p>Foto de perfil y racha.</p></div></div><article class="card"><div class="profile-row"><img id="myAvatar" class="avatar-img"><div><h3 id="myName"></h3><p id="myStreak"></p></div><form id="avatarForm" class="post-form compact"><input type="file" name="avatar" accept="image/*" capture="user" required><button class="btn small">Guardar foto</button></form></div></article></section>
-<section id="ranking" class="section"><div class="section-title"><span>🏆</span><div><h2>Ranking</h2><p>Puntos y rachas.</p></div></div><div id="rankingBox" class="ranking-grid"></div></section>
-<section id="logros" class="section"><div class="section-title"><span>🏅</span><div><h2>Logros</h2><p>Se calculan según la actividad.</p></div></div><article class="card"><div id="achievementsBox" class="badge-grid"></div></article></section>
+  <aside class="side-nav">
+    <div class="brand">❤️ LVE</div>
+    <button onclick="showView('home')">🏠 Inicio</button>
+    <button onclick="showView('today')">☀️ Hoy</button>
+    <button onclick="showView('feed')">💬 Feed</button>
+    <button onclick="showView('games')">🎮 Juegos</button>
+    <button onclick="showView('media')">➕ Subir</button>
+    <button onclick="showView('more')">✨ Más</button>
+  </aside>
 
-<section id="misiones" class="section"><div class="section-title"><span>📅</span><div><h2>Misiones diarias</h2><p>Usá la misión generada y subí tu respuesta.</p></div></div><article class="card"><button class="btn primary" onclick="generateDailyMission()">Generar misión</button><div id="dailyMission" class="big-result"></div><form class="post-form" data-section="misiones" data-points="30"><input type="hidden" name="challenge" id="missionInput"><textarea name="text" placeholder="Respuesta a la misión..."></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt" capture="environment"><button class="btn small">Completar misión</button></form><h3>Misiones completadas</h3><div id="posts-misiones" class="posts"></div></article></section>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="tag">Solo Lau y Eze</p>
+        <h1 id="pageTitle">Inicio</h1>
+      </div>
+      <div class="user-pill">
+        <img id="myAvatar" class="mini-avatar">
+        <span id="currentUserLabel"></span>
+        <button id="logoutBtn" class="logout-btn">Salir</button>
+      </div>
+    </header>
 
-<section id="desafios" class="section"><div class="section-title"><span>🎯</span><div><h2>Desafíos Laura vs Eze</h2><p>Los dos responden debajo.</p></div></div><article class="card"><button class="btn primary" onclick="generateChallenge()">Generar desafío</button><div id="currentChallenge" class="big-result">Tocá el botón para generar un desafío.</div><form class="post-form" data-section="desafios" data-points="25"><input type="hidden" name="challenge" id="challengeInput"><textarea name="text" placeholder="Respuesta..."></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt"><button class="btn small">Subir respuesta</button></form><div id="posts-desafios" class="posts"></div></article></section>
+    <section id="view-home" class="view active">
+      <div class="hero-card">
+        <div>
+          <h2>❤️ Laura vs Eze</h2>
+          <p>Una app privada para jugar, guardar recuerdos y no aburrirse.</p>
+        </div>
+        <button class="btn primary" onclick="showView('today')">Ver lo de hoy</button>
+      </div>
 
-<section id="aburrimiento" class="section"><div class="section-title"><span>🎲</span><div><h2>Aburrimiento 0%</h2><p>La ruleta decide qué hacer.</p></div></div><article class="card roulette-card"><div id="rouletteDisplay" class="roulette-display">Tocá la ruleta 👀</div><button class="btn primary big" onclick="spinRoulette()">No sabemos qué hacer</button><form class="post-form" data-section="aburrimiento" data-points="20"><input type="hidden" name="challenge" id="rouletteInput"><textarea name="text" placeholder="Respuesta..."></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt"><button class="btn small">Subir lo que tocó</button></form><div id="posts-aburrimiento" class="posts"></div></article></section>
+      <div id="rankingBox" class="ranking-grid"></div>
 
-<section id="fotos" class="section"><div class="section-title"><span>📷</span><div><h2>Desafíos de fotos</h2><p>Abre cámara desde celular.</p></div></div><article class="card photo-card"><div id="photoChallenge" class="big-result">📷 Sacate una foto con algo azul</div><button class="btn secondary" onclick="newPhotoChallenge()">Nuevo desafío</button><form class="post-form" data-section="fotos" data-points="15"><input type="hidden" name="challenge" id="photoInput"><textarea name="text" placeholder="Comentario..."></textarea><input type="file" name="file" accept="image/*" capture="environment"><button class="btn small">Subir foto</button></form><div id="posts-fotos" class="posts"></div></article></section>
+      <div class="dashboard-grid">
+        <button class="module-card" onclick="showView('today')">☀️<strong>Hoy</strong><span>Misión, plan y pregunta</span></button>
+        <button class="module-card" onclick="showView('games')">🎮<strong>Juegos</strong><span>Helados, Snake, Flappy</span></button>
+        <button class="module-card" onclick="showView('feed')">💬<strong>Feed</strong><span>Actividad reciente</span></button>
+        <button class="module-card" onclick="showView('watch')">🎬<strong>Pelis/Series</strong><span>Watchlist compartida</span></button>
+        <button class="module-card" onclick="showView('music')">🎵<strong>Música</strong><span>Playlist compartida</span></button>
+        <button class="module-card" onclick="showView('travel')">🗺️<strong>Viajes</strong><span>Argentina + mundo</span></button>
+        <button class="module-card" onclick="showView('memories')">❤️<strong>Recuerdos</strong><span>Fotos, audios y videos</span></button>
+        <button class="module-card" onclick="showView('surprises')">🎁<strong>Sorpresas</strong><span>Cajas con fecha</span></button>
+        <button class="module-card" onclick="showView('stats')">📊<strong>Stats</strong><span>Logros y estadísticas</span></button>
+      </div>
+    </section>
 
-<section id="juegos" class="section"><div class="section-title"><span>🎮</span><div><h2>Juegos</h2><p>Se mantienen los juegos de V3.</p></div></div>
-<div class="grid two">
-<article class="card game-card"><h3>🍦 Atrapa helados</h3><div class="game-info"><span>Puntos: <b id="iceScore">0</b></span><span>Nivel: <b id="iceLevel">1</b></span><span>Tiempo: <b id="iceTime">30</b>s</span></div><canvas id="iceGame" width="420" height="520"></canvas><button class="btn primary" onclick="startIceGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-helados', iceBestUnsaved, Math.min(80, iceBestUnsaved))">Guardar</button><div id="scores-atrapa-helados" class="posts"></div></article>
-<article class="card game-card"><h3>💖 Atrapa corazones</h3><div class="game-info"><span>Puntos: <b id="heartScore">0</b></span><span>Nivel: <b id="heartLevel">1</b></span><span>Tiempo: <b id="heartTime">30</b>s</span></div><canvas id="heartGame" width="420" height="520"></canvas><button class="btn primary" onclick="startHeartGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-corazones', heartBestUnsaved, Math.min(90, heartBestUnsaved))">Guardar</button><div id="scores-atrapa-corazones" class="posts"></div></article>
-<article class="card game-card"><h3>⭐ Atrapa estrellas</h3><div class="game-info"><span>Puntos: <b id="starScore">0</b></span><span>Nivel: <b id="starLevel">1</b></span><span>Tiempo: <b id="starTime">30</b>s</span></div><canvas id="starGame" width="420" height="520"></canvas><button class="btn primary" onclick="startStarGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-estrellas', starBestUnsaved, Math.min(100, starBestUnsaved))">Guardar</button><div id="scores-atrapa-estrellas" class="posts"></div></article>
-<article class="card game-card"><h3>⚡ Click rápido</h3><div class="game-info"><span>Nivel: <b id="clickLevel">1</b></span><span>Tiempo: <b id="clickTime">10</b>s</span></div><div class="big-result" id="clickScore">0 clicks</div><button class="btn primary big" id="clickBtn" onclick="clickGameTap()">Empezar</button><button class="btn secondary" onclick="saveGameScore('click-rapido', clickBestUnsaved, Math.min(80, clickBestUnsaved))">Guardar</button><div id="scores-click-rapido" class="posts"></div></article>
-<article class="card game-card"><h3>🧠 Memoria de emojis</h3><div class="game-info"><span>Nivel: <b id="memoryLevel">1</b></span><span>Movimientos: <b id="memoryMoves">0</b></span></div><button class="btn primary" onclick="startMemoryGame()">Nuevo</button><div id="memoryBoard" class="memory-board"></div><div id="memoryStatus" class="result"></div><button class="btn secondary" onclick="saveGameScore('memoria-emojis', memoryBestUnsaved, Math.max(10, 120 - memoryBestUnsaved))">Guardar</button><div id="scores-memoria-emojis" class="posts"></div></article>
-<article class="card game-card"><h3>🎯 Toca el objetivo</h3><div class="game-info"><span>Puntos: <b id="targetScore">0</b></span><span>Nivel: <b id="targetLevel">1</b></span><span>Tiempo: <b id="targetTime">25</b>s</span></div><div id="targetArena" class="target-arena"><button id="targetDot" onclick="hitTarget()">🎯</button></div><button class="btn primary" onclick="startTargetGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('toca-objetivo', targetBestUnsaved, Math.min(100, targetBestUnsaved))">Guardar</button><div id="scores-toca-objetivo" class="posts"></div></article>
-</div></section>
+    <section id="view-today" class="view">
+      <div class="section-title"><span>☀️</span><div><h2>Hoy</h2><p>Una pantalla simple para arrancar.</p></div></div>
+      <div class="today-grid">
+        <article class="card"><h3>📅 Misión del día</h3><div id="dailyMission" class="big-result"></div><button class="btn secondary" onclick="generateDailyMission(true)">Cambiar misión</button></article>
+        <article class="card"><h3>🎲 Plan sugerido</h3><div id="rouletteDisplay" class="big-result">Tocá para generar</div><button class="btn primary" onclick="spinRoulette()">No sabemos qué hacer</button></article>
+        <article class="card"><h3>❓ Pregunta del día</h3><div id="knowQuestion" class="big-result">¿Qué comida elegiría la otra persona?</div><button class="btn secondary" onclick="newKnowQuestion()">Nueva pregunta</button></article>
+      </div>
+      <article class="card">
+        <h3>Responder algo de hoy</h3>
+        <form class="post-form" data-section="hoy" data-points="30">
+          <input type="hidden" name="challenge" id="todayInput">
+          <textarea name="text" placeholder="Respuesta, canción, plan o comentario..."></textarea>
+          <input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt" capture="environment">
+          <button class="btn small">Subir</button>
+        </form>
+        <div id="posts-hoy" class="posts"></div>
+      </article>
+    </section>
 
-<section id="watchlist" class="section module" data-type="watchlist"><div class="section-title"><span>🎬</span><div><h2>Watchlist compartida</h2><p>Películas y series para ver.</p></div></div><article class="card"><form class="item-form"><input name="type" value="watchlist" type="hidden"><input name="title" placeholder="Título" required><select name="category"><option>Película</option><option>Serie</option></select><select name="status"><option>Pendiente</option><option>Viendo</option><option>Terminada</option><option>No interesa</option></select><input name="url" placeholder="Link opcional"><textarea name="notes" placeholder="Comentario"></textarea><button class="btn small">Agregar</button></form><div id="items-watchlist" class="items"></div></article></section>
-<section id="playlist" class="section module" data-type="playlist"><div class="section-title"><span>🎵</span><div><h2>Playlist compartida</h2><p>Canciones de ambos.</p></div></div><article class="card"><form class="item-form"><input name="type" value="playlist" type="hidden"><input name="title" placeholder="Canción / Artista" required><input name="url" placeholder="Spotify / YouTube"><textarea name="notes" placeholder="Por qué la agregás"></textarea><button class="btn small">Agregar canción</button></form><div id="items-playlist" class="items"></div></article></section>
-<section id="viajes" class="section module" data-type="travel"><div class="section-title"><span>🗺️</span><div><h2>Viajes soñados</h2><p>Argentina primero, mundo también.</p></div></div><article class="card"><button class="btn secondary" onclick="fillRandomTrip()">Sugerir destino</button><form class="item-form" id="travelForm"><input name="type" value="travel" type="hidden"><input name="title" id="travelTitle" placeholder="Destino" required><select name="category" id="travelCategory"><option>Argentina - Cuyo</option><option>Argentina - Patagonia</option><option>Argentina - Norte</option><option>Argentina - Centro</option><option>Argentina - Litoral</option><option>Argentina - Costa</option><option>Mundo</option></select><select name="status"><option>Sueño</option><option>Me gustaría</option><option>Quiero ir sí o sí</option><option>Ya fui</option></select><textarea name="notes" placeholder="Qué harían ahí"></textarea><button class="btn small">Agregar viaje</button></form><div id="items-travel" class="items"></div></article></section>
-<section id="recuerdos" class="section module" data-type="memory"><div class="section-title"><span>❤️</span><div><h2>Muro de recuerdos</h2><p>Fotos, videos, audios y textos.</p></div></div><article class="card"><form class="item-form" enctype="multipart/form-data"><input name="type" value="memory" type="hidden"><input name="title" placeholder="Título del recuerdo" required><textarea name="notes" placeholder="Descripción"></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt"><button class="btn small">Publicar recuerdo</button></form><div id="items-memory" class="items"></div></article></section>
-<section id="memes" class="section module" data-type="meme"><div class="section-title"><span>🤣</span><div><h2>Batalla de memes</h2><p>Suban memes y reaccionen.</p></div></div><article class="card"><form class="item-form" enctype="multipart/form-data"><input name="type" value="meme" type="hidden"><input name="title" placeholder="Nombre del meme" required><input type="file" name="file" accept="image/*,video/*"><textarea name="notes" placeholder="Comentario"></textarea><button class="btn small">Subir meme</button></form><div id="items-meme" class="items"></div></article></section>
-<section id="sorpresas" class="section module" data-type="surprise"><div class="section-title"><span>🎁</span><div><h2>Sorpresas</h2><p>Mensajes o archivos que se abren más adelante.</p></div></div><article class="card"><form class="item-form" enctype="multipart/form-data"><input name="type" value="surprise" type="hidden"><input name="title" placeholder="Título de la sorpresa" required><label>Abrir desde</label><input type="datetime-local" name="unlockAt"><textarea name="notes" placeholder="Mensaje secreto"></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt"><button class="btn small">Crear sorpresa</button></form><div id="items-surprise" class="items"></div></article></section>
-<section id="trivia" class="section module" data-type="trivia"><div class="section-title"><span>🧠</span><div><h2>Trivia Laura vs Eze</h2><p>Preguntas personalizadas.</p></div></div><article class="card"><button class="btn primary" onclick="newKnowQuestion()">Nueva pregunta</button><div id="knowQuestion" class="big-result">¿Qué comida elegiría la otra persona?</div><form class="post-form" data-section="conocerse" data-points="10"><input type="hidden" name="challenge" id="knowInput"><textarea name="text" placeholder="Tu respuesta..."></textarea><button class="btn small">Guardar respuesta</button></form><div id="posts-conocerse" class="posts"></div></article></section>
-<section id="stats" class="section"><div class="section-title"><span>📊</span><div><h2>Estadísticas</h2><p>Actividad general.</p></div></div><article class="card"><button class="btn secondary" onclick="loadStats()">Actualizar estadísticas</button><div id="statsBox" class="stats-grid"></div></article></section>
-<section id="galeria" class="section"><div class="section-title"><span>🖼️</span><div><h2>Galería</h2><p>Archivos subidos.</p></div></div><article class="card"><button class="btn secondary" onclick="loadAll()">Actualizar</button><div id="gallery" class="gallery"></div></article></section>
-</main><footer>Hecho por Eze · Laura vs Eze V4 🏆</footer></div>
+    <section id="view-feed" class="view">
+      <div class="section-title"><span>💬</span><div><h2>Feed privado</h2><p>Lo último que hicieron ambos.</p></div></div>
+      <div id="feedBox" class="feed"></div>
+    </section>
+
+    <section id="view-games" class="view">
+      <div class="section-title"><span>🎮</span><div><h2>Juegos</h2><p>Todos con ranking y dificultad.</p></div></div>
+      <div class="game-menu">
+        <button onclick="openGame('icePanel')">🍦 Helados</button>
+        <button onclick="openGame('heartPanel')">💖 Corazones</button>
+        <button onclick="openGame('starPanel')">⭐ Estrellas</button>
+        <button onclick="openGame('clickPanel')">⚡ Click</button>
+        <button onclick="openGame('memoryPanel')">🧠 Memoria</button>
+        <button onclick="openGame('targetPanel')">🎯 Objetivo</button>
+        <button onclick="openGame('snakePanel')">🐍 Snake</button>
+        <button onclick="openGame('flappyPanel')">🐦 Flappy</button>
+      </div>
+
+      <div id="icePanel" class="game-panel card active"><h3>🍦 Atrapa helados</h3><div class="game-info"><span>Puntos: <b id="iceScore">0</b></span><span>Nivel: <b id="iceLevel">1</b></span><span>Tiempo: <b id="iceTime">30</b>s</span></div><canvas id="iceGame" width="420" height="520"></canvas><button class="btn primary" onclick="startIceGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-helados', iceBestUnsaved, Math.min(80, iceBestUnsaved))">Guardar</button><div id="scores-atrapa-helados" class="posts"></div></div>
+      <div id="heartPanel" class="game-panel card"><h3>💖 Atrapa corazones</h3><div class="game-info"><span>Puntos: <b id="heartScore">0</b></span><span>Nivel: <b id="heartLevel">1</b></span><span>Tiempo: <b id="heartTime">30</b>s</span></div><canvas id="heartGame" width="420" height="520"></canvas><button class="btn primary" onclick="startHeartGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-corazones', heartBestUnsaved, Math.min(90, heartBestUnsaved))">Guardar</button><div id="scores-atrapa-corazones" class="posts"></div></div>
+      <div id="starPanel" class="game-panel card"><h3>⭐ Atrapa estrellas</h3><div class="game-info"><span>Puntos: <b id="starScore">0</b></span><span>Nivel: <b id="starLevel">1</b></span><span>Tiempo: <b id="starTime">30</b>s</span></div><canvas id="starGame" width="420" height="520"></canvas><button class="btn primary" onclick="startStarGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('atrapa-estrellas', starBestUnsaved, Math.min(100, starBestUnsaved))">Guardar</button><div id="scores-atrapa-estrellas" class="posts"></div></div>
+      <div id="clickPanel" class="game-panel card"><h3>⚡ Click rápido</h3><div class="big-result" id="clickScore">0 clicks</div><button id="clickBtn" class="btn primary big" onclick="clickGameTap()">Empezar</button><button class="btn secondary" onclick="saveGameScore('click-rapido', clickBestUnsaved, Math.min(80, clickBestUnsaved))">Guardar</button><div id="scores-click-rapido" class="posts"></div></div>
+      <div id="memoryPanel" class="game-panel card"><h3>🧠 Memoria</h3><div class="game-info"><span>Nivel: <b id="memoryLevel">1</b></span><span>Movimientos: <b id="memoryMoves">0</b></span></div><button class="btn primary" onclick="startMemoryGame()">Nuevo</button><div id="memoryBoard" class="memory-board"></div><div id="memoryStatus" class="result"></div><button class="btn secondary" onclick="saveGameScore('memoria-emojis', memoryBestUnsaved, Math.max(10, 120 - memoryBestUnsaved))">Guardar</button><div id="scores-memoria-emojis" class="posts"></div></div>
+      <div id="targetPanel" class="game-panel card"><h3>🎯 Toca objetivo</h3><div class="game-info"><span>Puntos: <b id="targetScore">0</b></span><span>Nivel: <b id="targetLevel">1</b></span><span>Tiempo: <b id="targetTime">25</b>s</span></div><div id="targetArena" class="target-arena"><button id="targetDot" onclick="hitTarget()">🎯</button></div><button class="btn primary" onclick="startTargetGame()">Empezar</button><button class="btn secondary" onclick="saveGameScore('toca-objetivo', targetBestUnsaved, Math.min(100, targetBestUnsaved))">Guardar</button><div id="scores-toca-objetivo" class="posts"></div></div>
+      <div id="snakePanel" class="game-panel card"><h3>🐍 Snake</h3><div class="game-info"><span>Puntos: <b id="snakeScore">0</b></span><span>Nivel: <b id="snakeLevel">1</b></span></div><canvas id="snakeGame" width="420" height="420"></canvas><div class="mobile-controls"><button onclick="snakeDir('up')">⬆️</button><button onclick="snakeDir('left')">⬅️</button><button onclick="snakeDir('right')">➡️</button><button onclick="snakeDir('down')">⬇️</button></div><button class="btn primary" onclick="startSnake()">Empezar</button><button class="btn secondary" onclick="saveGameScore('snake', snakeBestUnsaved, Math.min(120, snakeBestUnsaved))">Guardar</button><div id="scores-snake" class="posts"></div></div>
+      <div id="flappyPanel" class="game-panel card"><h3>🐦 Flappy</h3><div class="game-info"><span>Puntos: <b id="flappyScore">0</b></span><span>Nivel: <b id="flappyLevel">1</b></span></div><canvas id="flappyGame" width="420" height="520"></canvas><button class="btn primary big" onclick="startFlappy()">Empezar / Saltar</button><button class="btn secondary" onclick="saveGameScore('flappy', flappyBestUnsaved, Math.min(120, flappyBestUnsaved*5))">Guardar</button><div id="scores-flappy" class="posts"></div></div>
+    </section>
+
+    <section id="view-media" class="view">
+      <div class="section-title"><span>➕</span><div><h2>Subir rápido</h2><p>Foto, video, audio, documento o desafío.</p></div></div>
+      <div class="quick-grid">
+        <article class="card"><h3>🎯 Desafío</h3><button class="btn secondary" onclick="generateChallenge()">Generar</button><div id="currentChallenge" class="result">Tocá generar.</div><form class="post-form" data-section="desafios" data-points="25"><input type="hidden" name="challenge" id="challengeInput"><textarea name="text" placeholder="Respuesta..."></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt"><button class="btn small">Subir</button></form><div id="posts-desafios" class="posts"></div></article>
+        <article class="card"><h3>📷 Desafío foto</h3><button class="btn secondary" onclick="newPhotoChallenge()">Nuevo</button><div id="photoChallenge" class="result">📷 Sacate una foto con algo azul</div><form class="post-form" data-section="fotos" data-points="15"><input type="hidden" name="challenge" id="photoInput"><textarea name="text" placeholder="Comentario..."></textarea><input type="file" name="file" accept="image/*" capture="environment"><button class="btn small">Subir foto</button></form><div id="posts-fotos" class="posts"></div></article>
+      </div>
+    </section>
+
+    <section id="view-watch" class="view module" data-type="watchlist">
+      <div class="section-title"><span>🎬</span><div><h2>Watchlist</h2><p>Estilo Netflix privado.</p></div></div>
+      <article class="card"><form class="item-form"><input name="type" value="watchlist" type="hidden"><input name="title" placeholder="Título" required><select name="category"><option>Película</option><option>Serie</option></select><select name="status"><option>Pendiente</option><option>Viendo</option><option>Terminada</option><option>No interesa</option></select><input name="url" placeholder="Link"><textarea name="notes" placeholder="Comentario"></textarea><button class="btn small">Agregar</button></form><div id="items-watchlist" class="poster-grid"></div></article>
+    </section>
+
+    <section id="view-music" class="view module" data-type="playlist">
+      <div class="section-title"><span>🎵</span><div><h2>Playlist</h2><p>Estilo Spotify privado.</p></div></div>
+      <article class="card"><form class="item-form"><input name="type" value="playlist" type="hidden"><input name="title" placeholder="Canción / Artista" required><input name="url" placeholder="Spotify / YouTube"><textarea name="notes" placeholder="Por qué la agregás"></textarea><button class="btn small">Agregar canción</button></form><div id="items-playlist" class="music-list"></div></article>
+    </section>
+
+    <section id="view-travel" class="view module" data-type="travel">
+      <div class="section-title"><span>🗺️</span><div><h2>Viajes</h2><p>Argentina primero, mundo también.</p></div></div>
+      <article class="card"><button class="btn secondary" onclick="fillRandomTrip()">Sugerir destino</button><form class="item-form" id="travelForm"><input name="type" value="travel" type="hidden"><input name="title" id="travelTitle" placeholder="Destino" required><select name="category" id="travelCategory"><option>Argentina - Cuyo</option><option>Argentina - Patagonia</option><option>Argentina - Norte</option><option>Argentina - Centro</option><option>Argentina - Litoral</option><option>Argentina - Costa</option><option>Mundo</option></select><select name="status"><option>Sueño</option><option>Me gustaría</option><option>Quiero ir sí o sí</option><option>Ya fui</option></select><textarea name="notes" placeholder="Qué harían ahí"></textarea><button class="btn small">Agregar viaje</button></form><div id="travelMatch" class="big-result">Coincidencia de destinos: calculando...</div><div id="items-travel" class="travel-grid"></div></article>
+    </section>
+
+    <section id="view-memories" class="view module" data-type="memory">
+      <div class="section-title"><span>❤️</span><div><h2>Recuerdos</h2><p>Muro visual privado.</p></div></div>
+      <article class="card"><form class="item-form" enctype="multipart/form-data"><input name="type" value="memory" type="hidden"><input name="title" placeholder="Título" required><textarea name="notes" placeholder="Descripción"></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt"><button class="btn small">Publicar recuerdo</button></form><div id="items-memory" class="memory-wall"></div></article>
+    </section>
+
+    <section id="view-surprises" class="view module" data-type="surprise">
+      <div class="section-title"><span>🎁</span><div><h2>Sorpresas</h2><p>Cajas cerradas hasta la fecha.</p></div></div>
+      <article class="card"><form class="item-form" enctype="multipart/form-data"><input name="type" value="surprise" type="hidden"><input name="title" placeholder="Título" required><label>Abrir desde</label><input type="datetime-local" name="unlockAt"><textarea name="notes" placeholder="Mensaje secreto"></textarea><input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.txt"><button class="btn small">Crear sorpresa</button></form><div id="items-surprise" class="surprise-grid"></div></article>
+    </section>
+
+    <section id="view-more" class="view">
+      <div class="section-title"><span>✨</span><div><h2>Más módulos</h2><p>Memes, trivia, estadísticas y logros.</p></div></div>
+      <div class="dashboard-grid">
+        <button class="module-card" onclick="showView('memes')">🤣<strong>Memes</strong><span>Batalla de memes</span></button>
+        <button class="module-card" onclick="showView('trivia')">🧠<strong>Trivia</strong><span>¿Quién conoce mejor?</span></button>
+        <button class="module-card" onclick="showView('stats')">📊<strong>Stats</strong><span>Logros y números</span></button>
+      </div>
+    </section>
+
+    <section id="view-memes" class="view module" data-type="meme">
+      <div class="section-title"><span>🤣</span><div><h2>Batalla de memes</h2><p>Suban memes y reaccionen.</p></div></div>
+      <article class="card"><form class="item-form" enctype="multipart/form-data"><input name="type" value="meme" type="hidden"><input name="title" placeholder="Nombre del meme" required><input type="file" name="file" accept="image/*,video/*"><textarea name="notes" placeholder="Comentario"></textarea><button class="btn small">Subir meme</button></form><div id="items-meme" class="memory-wall"></div></article>
+    </section>
+
+    <section id="view-trivia" class="view">
+      <div class="section-title"><span>🧠</span><div><h2>Trivia Laura vs Eze</h2><p>Preguntas para ambos.</p></div></div>
+      <article class="card"><button class="btn primary" onclick="newKnowQuestion()">Nueva pregunta</button><div id="knowQuestion2" class="big-result">¿Qué comida elegiría la otra persona?</div><form class="post-form" data-section="conocerse" data-points="10"><input type="hidden" name="challenge" id="knowInput"><textarea name="text" placeholder="Tu respuesta..."></textarea><button class="btn small">Guardar</button></form><div id="posts-conocerse" class="posts"></div></article>
+    </section>
+
+    <section id="view-stats" class="view">
+      <div class="section-title"><span>📊</span><div><h2>Estadísticas y logros</h2><p>Actividad general.</p></div></div>
+      <article class="card"><button class="btn secondary" onclick="loadStats()">Actualizar</button><div id="achievementsBox" class="badge-grid"></div><div id="statsBox" class="stats-grid"></div></article>
+    </section>
+
+    <section id="view-gallery" class="view">
+      <div class="section-title"><span>🖼️</span><div><h2>Galería</h2><p>Archivos subidos.</p></div></div>
+      <article class="card"><button class="btn secondary" onclick="loadAll()">Actualizar</button><div id="gallery" class="gallery"></div></article>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button onclick="showView('home')">🏠<span>Inicio</span></button>
+    <button onclick="showView('games')">🎮<span>Juegos</span></button>
+    <button onclick="showView('media')">➕<span>Subir</span></button>
+    <button onclick="showView('feed')">💬<span>Feed</span></button>
+    <button onclick="showView('more')">✨<span>Más</span></button>
+  </nav>
+</div>
 <script src="/app.js"></script>
-</body></html>
+</body>
+</html>

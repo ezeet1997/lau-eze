@@ -1,7 +1,7 @@
 {
   "name": "laura-vs-eze-railway",
-  "version": "4.0.0",
-  "description": "Red social privada Laura vs Eze",
+  "version": "5.0.0",
+  "description": "Laura vs Eze V5 dashboard app privada",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

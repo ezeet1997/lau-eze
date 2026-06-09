@@ -1,23 +1,28 @@
-# Laura vs Eze Railway V4
+# Laura vs Eze Railway V5 Completo
 
-V4 mantiene todo lo de V3 y agrega:
+V5 completa para Railway. Mantiene backend SQLite, usuarios fijos `eze` y `lau`, archivos, puntos y módulos anteriores.
 
-- Usuarios fijos: solo `eze` y `lau`.
-- Misiones diarias.
-- Logros calculados.
-- Watchlist de películas/series.
-- Playlist compartida.
-- Viajes soñados con destinos de Argentina y mundo.
-- Muro de recuerdos.
-- Batalla de memes.
-- Sorpresas con fecha de desbloqueo.
-- Reacciones y votos.
-- Estadísticas.
-- Rachas.
+## Novedades principales
 
-## Actualizar en Railway
+- Dashboard tipo app.
+- Feed privado de actividad.
+- Pantalla "Hoy".
+- Menú lateral en PC.
+- Menú inferior en celular.
+- Subida rápida.
+- Watchlist visual.
+- Playlist visual.
+- Viajes visuales Argentina + mundo.
+- Recuerdos visuales.
+- Sorpresas visuales.
+- Snake.
+- Flappy.
+- Juegos anteriores.
+- Stats y logros.
 
-Reemplazá en tu repo:
+## Actualización
+
+Reemplazá estos archivos en tu repo:
 
 - server.js
 - package.json
@@ -25,7 +30,7 @@ Reemplazá en tu repo:
 - public/styles.css
 - public/app.js
 
-Hacé commit y push. Railway redeploya solo.
+Luego commit + push. Railway redeploya solo.
 
 ## Variables recomendadas
 
@@ -35,4 +40,4 @@ LAU_PASSWORD=clave_lau
 
 ## Importante
 
-No borres los volúmenes o carpetas `data` y `uploads` de Railway si querés mantener lo anterior.
+No borres `data` ni `uploads` si querés conservar datos.
