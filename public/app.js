@@ -43,7 +43,32 @@ document.addEventListener("submit",async e=>{if(e.target.classList.contains("pos
 function showView(name){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(`view-${name}`)?.classList.add("active");pageTitle.textContent=({home:"Inicio",today:"Hoy",feed:"Feed",games:"Juegos",media:"Subir",watch:"Pelis/Series",music:"Música",travel:"Viajes",memories:"Recuerdos",surprises:"Sorpresas",more:"Más",memes:"Memes",trivia:"Trivia",stats:"Estadísticas",gallery:"Galería"})[name]||"Laura vs Eze";window.scrollTo(0,0);if(name==="feed")loadFeed();if(name==="stats")loadStats()}
 async function checkSession(){const d=await (await fetch("/api/me")).json();if(d.user){currentUser=d.user;showApp()}}
 function showApp(){loginScreen.classList.add("hidden");app.classList.remove("hidden");updateUser();generateDailyMission(false);setHiddenInputs();loadAll()}
-function updateUser(){currentUserLabel.textContent=`${currentUser.displayName} · ${currentUser.points||0} pts · 🔥 ${currentUser.streak||0}`;myAvatar.src=currentUser.avatarUrl||defaultAvatar(currentUser.username)}
+function updateUser(){
+
+    currentUserLabel.textContent =
+    `${currentUser.displayName} · ${currentUser.points||0} pts · 🔥 ${currentUser.streak||0}`;
+
+    const avatar =
+    currentUser.avatarUrl ||
+    defaultAvatar(currentUser.username);
+
+    myAvatar.src = avatar;
+
+    const profileAvatar =
+    document.getElementById("profileAvatar");
+
+    if(profileAvatar){
+        profileAvatar.src = avatar;
+    }
+
+    const profileName =
+    document.getElementById("profileName");
+
+    if(profileName){
+        profileName.textContent =
+        currentUser.displayName;
+    }
+}
 function defaultAvatar(u){return `https://ui-avatars.com/api/?name=${encodeURIComponent(u==="lau"?"Lau":"Eze")}&background=7c5cff&color=fff&size=200`}
 function setHiddenInputs(){todayInput.value=[dailyMission?.textContent,rouletteDisplay?.textContent,knowQuestion?.textContent].filter(Boolean).join(" | ");challengeInput.value=currentChallenge?.textContent||"";photoInput.value=photoChallenge?.textContent||"";knowInput.value=knowQuestion2?.textContent||""}
 async function submitPost(form){const fd=new FormData(form);fd.append("section",form.dataset.section);fd.append("points",form.dataset.points||"5");const d=await (await fetch("/api/posts",{method:"POST",body:fd})).json();if(!d.ok)return alert(d.message);if(d.user){currentUser=d.user;updateUser()}form.reset();setHiddenInputs();loadAll()}
