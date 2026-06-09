@@ -1,20 +1,21 @@
-# Laura vs Eze Railway V3
+# Laura vs Eze Railway V4
 
-Novedades:
-- Desafío de fotos con `capture="environment"` para abrir cámara desde celular.
-- Foto de perfil también puede abrir cámara frontal.
-- Juegos con dificultad progresiva:
-  - Atrapa helados
-  - Atrapa corazones
-  - Atrapa estrellas
-  - Click rápido
-  - Memoria de emojis
-  - Toca el objetivo
-  - Verdadero o falso
-- Más preguntas, desafíos, películas y opciones de ruleta.
-- Mantiene borrado de publicaciones/archivos.
+V4 mantiene todo lo de V3 y agrega:
 
-## Cómo actualizar
+- Usuarios fijos: solo `eze` y `lau`.
+- Misiones diarias.
+- Logros calculados.
+- Watchlist de películas/series.
+- Playlist compartida.
+- Viajes soñados con destinos de Argentina y mundo.
+- Muro de recuerdos.
+- Batalla de memes.
+- Sorpresas con fecha de desbloqueo.
+- Reacciones y votos.
+- Estadísticas.
+- Rachas.
+
+## Actualizar en Railway
 
 Reemplazá en tu repo:
 
@@ -24,9 +25,14 @@ Reemplazá en tu repo:
 - public/styles.css
 - public/app.js
 
-Después commit y push. Railway redeploya solo.
+Hacé commit y push. Railway redeploya solo.
+
+## Variables recomendadas
+
+SESSION_SECRET=clave_larga
+EZE_PASSWORD=tu_clave
+LAU_PASSWORD=clave_lau
 
 ## Importante
 
-No borres la carpeta data/uploads de Railway si querés mantener lo anterior.
-La base anterior se mantiene.
+No borres los volúmenes o carpetas `data` y `uploads` de Railway si querés mantener lo anterior.
