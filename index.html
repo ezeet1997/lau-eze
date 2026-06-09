@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centro Anti Aburrimiento</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <p class="tag">Laura vs Eze · acceso privado</p>
+      <h1>🚀 Centro Anti Aburrimiento</h1>
+      <p class="subtitle">Entrá con un usuario simple para guardar tus respuestas.</p>
+
+      <div class="tabs">
+        <button id="loginTab" class="active" onclick="setAuthMode('login')">Ingresar</button>
+        <button id="registerTab" onclick="setAuthMode('register')">Registrarse</button>
+      </div>
+
+      <form onsubmit="handleAuth(event)" class="auth-form">
+        <label>Usuario</label>
+        <input id="username" type="text" placeholder="Ej: Laura o Eze" required />
+
+        <label>Clave</label>
+        <input id="password" type="password" placeholder="Clave simple" required />
+
+        <button id="authButton" class="btn primary full" type="submit">Ingresar</button>
+      </form>
+
+      <p id="authMessage" class="auth-message"></p>
+      <p class="tiny">Dato: esto guarda la información en este navegador.</p>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
+    <header class="hero">
+      <div class="topbar">
+        <span id="currentUserLabel">Usuario</span>
+        <button onclick="logout()" class="logout-btn">Salir</button>
+      </div>
+
+      <p class="tag">Laura vs Eze · edición diversión</p>
+      <h1>🚀 Centro Anti Aburrimiento</h1>
+      <p class="subtitle">Para cuando no sabemos qué hacer, qué ver o de qué hablar 😌</p>
+      <div class="hero-actions">
+        <a href="#desafio" class="btn primary">Empezar desafío</a>
+        <a href="#ruleta" class="btn secondary">Usar ruleta</a>
+        <a href="#respuestas" class="btn secondary">Ver respuestas</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="card intro">
+        <h2>Regla principal</h2>
+        <p>Esto no es serio. No hay presión. Solo entrar, tocar botones y ver qué sale 😂</p>
+      </section>
+
+      <section id="desafio" class="section">
+        <div class="section-title">
+          <span>🎮</span>
+          <div>
+            <h2>Desafío Laura vs Eze</h2>
+            <p>Mini juegos para romper el hielo.</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <article class="card game">
+            <h3>🪨 Piedra, Papel o Tijera</h3>
+            <p>Elegí una opción y la página juega contra vos.</p>
+            <div class="choices">
+              <button onclick="playRPS('piedra')">🪨 Piedra</button>
+              <button onclick="playRPS('papel')">📄 Papel</button>
+              <button onclick="playRPS('tijera')">✂️ Tijera</button>
+            </div>
+            <div id="rpsResult" class="result">Esperando jugada...</div>
+          </article>
+
+          <article class="card game">
+            <h3>🎬 Adivinar películas</h3>
+            <p>Aparecen emojis. Hay que adivinar la peli.</p>
+            <button onclick="newMovie()" class="btn small">Nueva película</button>
+            <div id="movieEmoji" class="big-result">🍫🏭👦</div>
+            <input id="movieGuess" class="answer-input" placeholder="Escribí tu respuesta..." />
+            <button onclick="saveMovieGuess()" class="btn small">Guardar respuesta</button>
+            <button onclick="showMovieAnswer()" class="link-btn">Ver respuesta</button>
+            <div id="movieAnswer" class="result hidden"></div>
+          </article>
+
+          <article class="card game">
+            <h3>🧠 Cultura general</h3>
+            <p>Pregunta random para competir.</p>
+            <button onclick="newTrivia()" class="btn small">Generar pregunta</button>
+            <div id="triviaQuestion" class="result">Tocá el botón para empezar.</div>
+            <input id="triviaGuess" class="answer-input" placeholder="Escribí tu respuesta..." />
+            <button onclick="saveTriviaGuess()" class="btn small">Guardar respuesta</button>
+            <button onclick="showTriviaAnswer()" class="link-btn">Ver respuesta</button>
+            <div id="triviaAnswer" class="result hidden"></div>
+          </article>
+
+          <article class="card game">
+            <h3>💭 ¿Quién conoce mejor al otro?</h3>
+            <p>Pregunta para responder los dos.</p>
+            <button onclick="newKnowQuestion()" class="btn small">Nueva pregunta</button>
+            <div id="knowQuestion" class="result">¿Qué elegiría la otra persona para cenar?</div>
+            <textarea id="knowAnswer" class="answer-input textarea" placeholder="Escribí tu respuesta..."></textarea>
+            <button onclick="saveKnowAnswer()" class="btn small">Guardar respuesta</button>
+          </article>
+        </div>
+      </section>
+
+      <section id="ruleta" class="section">
+        <div class="section-title">
+          <span>🎲</span>
+          <div>
+            <h2>Aburrimiento 0%</h2>
+            <p>Una ruleta para decidir qué hacer.</p>
+          </div>
+        </div>
+
+        <article class="card roulette-card">
+          <div id="rouletteDisplay" class="roulette-display">Tocá el botón y vemos qué sale 👀</div>
+          <button onclick="spinRoulette()" class="btn primary big">No sabemos qué hacer</button>
+          <button onclick="saveRouletteResult()" class="btn secondary">Guardar lo que salió</button>
+        </article>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <span>📷</span>
+          <div>
+            <h2>Desafíos de fotos</h2>
+            <p>Fotos simples, graciosas y sin complicarse.</p>
+          </div>
+        </div>
+
+        <article class="card photo-card">
+          <div id="photoChallenge" class="big-result">📷 Sacate una foto con cara de sueño</div>
+          <button onclick="newPhotoChallenge()" class="btn secondary">Generar desafío</button>
+          <button onclick="savePhotoChallenge()" class="btn small">Guardar desafío</button>
+        </article>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <span>🍿</span>
+          <div>
+            <h2>Selector de pelis y series</h2>
+            <p>Cuando nadie sabe qué ver.</p>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <article class="card">
+            <h3>🎬 Película</h3>
+            <p>Genera género + tipo de peli.</p>
+            <button onclick="chooseMoviePlan()" class="btn small">Elegí una peli</button>
+            <div id="moviePlan" class="result">Esperando elección...</div>
+            <textarea id="movieComment" class="answer-input textarea" placeholder="¿Qué peli propongo?"></textarea>
+            <button onclick="saveMoviePlan()" class="btn small">Guardar propuesta</button>
+          </article>
+
+          <article class="card">
+            <h3>📺 Serie</h3>
+            <p>Genera estilo de serie para mirar.</p>
+            <button onclick="chooseSeriesPlan()" class="btn small">Elegí una serie</button>
+            <div id="seriesPlan" class="result">Esperando elección...</div>
+            <textarea id="seriesComment" class="answer-input textarea" placeholder="¿Qué serie propongo?"></textarea>
+            <button onclick="saveSeriesPlan()" class="btn small">Guardar propuesta</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <span>✈️</span>
+          <div>
+            <h2>Viaje ficticio</h2>
+            <p>Un destino imposible para imaginar.</p>
+          </div>
+        </div>
+
+        <article class="card trip-card">
+          <div id="tripResult" class="trip-result">
+            Tocá el botón y armamos un viaje random 🌎
+          </div>
+          <button onclick="newTrip()" class="btn primary">Generar viaje</button>
+          <textarea id="tripComment" class="answer-input textarea" placeholder="¿Qué agregarías al viaje?"></textarea>
+          <button onclick="saveTrip()" class="btn small">Guardar viaje</button>
+        </article>
+      </section>
+
+      <section id="respuestas" class="section">
+        <div class="section-title">
+          <span>📌</span>
+          <div>
+            <h2>Respuestas guardadas</h2>
+            <p>Todo lo que fue guardando cada usuario en este navegador.</p>
+          </div>
+        </div>
+
+        <article class="card">
+          <div class="saved-actions">
+            <button onclick="renderSaved()" class="btn small">Actualizar lista</button>
+            <button onclick="downloadSaved()" class="btn secondary">Descargar respuestas</button>
+            <button onclick="clearMyAnswers()" class="danger-btn">Borrar mis respuestas</button>
+          </div>
+          <div id="savedList" class="saved-list"></div>
+        </article>
+      </section>
+
+      <section class="card final-card">
+        <h2>Modo final</h2>
+        <p>Si la página eligió algo, hay que cumplirlo. Bueno... salvo que sea muy vergonzoso 😂</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>Hecho por Eze · Centro Anti Aburrimiento 🚀</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
