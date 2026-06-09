@@ -1,6 +1,6 @@
 {
   "name": "laura-vs-eze-railway",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Juego privado de desafios Laura vs Eze",
   "main": "server.js",
   "scripts": {

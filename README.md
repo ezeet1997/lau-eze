@@ -1,60 +1,34 @@
-# Laura vs Eze - Railway
+# Laura vs Eze Railway V2
 
-App privada con:
+Novedades:
+- Foto de perfil para Eze y Lau.
+- Borrado de publicaciones y archivos subidos.
+- Más desafíos, preguntas, películas y opciones de ruleta.
+- Más juegos:
+  - Atrapa helados
+  - Atrapa corazones
+  - Click rápido
+  - Memoria de emojis
+- Respuestas debajo de cada sección.
 
-- Login simple: eze / lau
-- Clave por defecto: 1234
-- Desafíos
-- Aburrimiento 0%
-- Subida de fotos, videos, audios y documentos
-- Respuestas debajo de cada sección
-- Galería
-- Ranking de puntos
-- Juego Atrapa Helados
+## Cómo actualizar
 
-## Deploy en Railway
+1. Reemplazá en tu repo:
+   - server.js
+   - package.json
+   - public/index.html
+   - public/styles.css
+   - public/app.js
+2. Hacé commit y push.
+3. Railway redeploya solo.
 
-1. Crear un repo en GitHub.
-2. Subir estos archivos.
-3. En Railway, crear New Project.
-4. Elegir Deploy from GitHub Repo.
-5. Seleccionar el repo.
-6. Railway detecta Node.js.
-7. Deploy.
+## Importante
 
-## Variables recomendadas en Railway
+La base se migra sola: agrega avatar_url, points y meta si faltan.
+No hace falta borrar la base anterior.
 
-En Variables:
+## Variables
 
-```env
-SESSION_SECRET=una_clave_larga_random
-EZE_PASSWORD=tu_clave_para_eze
-LAU_PASSWORD=tu_clave_para_lau
-```
-
-Opcional:
-
-```env
-DATA_DIR=/app/data
-UPLOAD_DIR=/app/uploads
-```
-
-## Importante sobre Railway y archivos
-
-Para que no se pierdan la base SQLite y los archivos subidos en cada redeploy, conviene agregar un Volume en Railway y montarlo en:
-
-```text
-/app/data
-/app/uploads
-```
-
-Si no agregás volumen, puede funcionar, pero los datos podrían perderse en redeploys.
-
-## Límites
-
-El límite de archivo está en 80 MB.
-Podés cambiarlo en `server.js`:
-
-```js
-fileSize: 80 * 1024 * 1024
-```
+SESSION_SECRET=clave_larga
+EZE_PASSWORD=clave_eze
+LAU_PASSWORD=clave_lau
