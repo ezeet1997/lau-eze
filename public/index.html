@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laura vs Eze</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <p class="tag">App privada</p>
+      <h1>🏆 Laura vs Eze</h1>
+      <p class="subtitle">Juego de desafíos, puntos, fotos, audios y videos.</p>
+
+      <form id="loginForm" class="auth-form">
+        <label>Usuario</label>
+        <input id="username" type="text" placeholder="eze o lau" autocomplete="username" required>
+
+        <label>Clave</label>
+        <input id="password" type="password" placeholder="Clave" autocomplete="current-password" required>
+
+        <button class="btn primary full" type="submit">Entrar</button>
+      </form>
+
+      <p id="loginMsg" class="auth-message"></p>
+      <p class="tiny">Usuarios por defecto: eze / lau. Clave inicial: 1234.</p>
+    </div>
+  </section>
+
+  <div id="app" class="hidden">
+    <header class="hero">
+      <div class="topbar">
+        <span id="currentUserLabel"></span>
+        <button id="logoutBtn" class="logout-btn">Salir</button>
+      </div>
+
+      <p class="tag">Juego privado para no aburrirse</p>
+      <h1>🏆 Laura vs Eze</h1>
+      <p class="subtitle">Desafíos, ruleta, juegos, ranking y recuerdos compartidos.</p>
+
+      <nav class="nav">
+        <a href="#ranking">Ranking</a>
+        <a href="#desafios">Desafíos</a>
+        <a href="#aburrimiento">Aburrimiento 0%</a>
+        <a href="#helados">Atrapa helados</a>
+        <a href="#peliculas">Películas</a>
+        <a href="#galeria">Galería</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="ranking" class="section">
+        <div class="section-title">
+          <span>🏆</span>
+          <div>
+            <h2>Ranking</h2>
+            <p>Puntos acumulados por cada acción.</p>
+          </div>
+        </div>
+        <div id="rankingBox" class="ranking-grid"></div>
+      </section>
+
+      <section id="desafios" class="section">
+        <div class="section-title">
+          <span>🎯</span>
+          <div>
+            <h2>Desafíos Laura vs Eze</h2>
+            <p>Los dos responden. Nada de jugar contra la página.</p>
+          </div>
+        </div>
+
+        <article class="card">
+          <button class="btn primary" onclick="generateChallenge()">Generar desafío</button>
+          <div id="currentChallenge" class="big-result">Tocá el botón para generar un desafío.</div>
+
+          <form class="post-form" data-section="desafios" data-points="25">
+            <input type="hidden" name="challenge" id="challengeInput">
+            <textarea name="text" placeholder="Escribí tu respuesta o descripción..."></textarea>
+            <input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt">
+            <button class="btn small" type="submit">Subir respuesta</button>
+          </form>
+
+          <h3>Respuestas de esta sección</h3>
+          <div id="posts-desafios" class="posts"></div>
+        </article>
+      </section>
+
+      <section id="aburrimiento" class="section">
+        <div class="section-title">
+          <span>🎲</span>
+          <div>
+            <h2>Aburrimiento 0%</h2>
+            <p>La ruleta decide qué toca hacer.</p>
+          </div>
+        </div>
+
+        <article class="card roulette-card">
+          <div id="rouletteDisplay" class="roulette-display">Tocá la ruleta 👀</div>
+          <button class="btn primary big" onclick="spinRoulette()">No sabemos qué hacer</button>
+
+          <form class="post-form" data-section="aburrimiento" data-points="20">
+            <input type="hidden" name="challenge" id="rouletteInput">
+            <textarea name="text" placeholder="Comentario, link, canción, anécdota o respuesta..."></textarea>
+            <input type="file" name="file" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt">
+            <button class="btn small" type="submit">Subir lo que tocó</button>
+          </form>
+
+          <h3>Respuestas de Aburrimiento 0%</h3>
+          <div id="posts-aburrimiento" class="posts"></div>
+        </article>
+      </section>
+
+      <section id="fotos" class="section">
+        <div class="section-title">
+          <span>📷</span>
+          <div>
+            <h2>Desafíos de fotos</h2>
+            <p>Reto de foto para ambos.</p>
+          </div>
+        </div>
+
+        <article class="card photo-card">
+          <div id="photoChallenge" class="big-result">📷 Sacate una foto con algo azul</div>
+          <button class="btn secondary" onclick="newPhotoChallenge()">Nuevo desafío de foto</button>
+
+          <form class="post-form" data-section="fotos" data-points="15">
+            <input type="hidden" name="challenge" id="photoInput">
+            <textarea name="text" placeholder="Comentario de la foto..."></textarea>
+            <input type="file" name="file" accept="image/*">
+            <button class="btn small" type="submit">Subir foto</button>
+          </form>
+
+          <h3>Fotos subidas</h3>
+          <div id="posts-fotos" class="posts"></div>
+        </article>
+      </section>
+
+      <section id="helados" class="section">
+        <div class="section-title">
+          <span>🍦</span>
+          <div>
+            <h2>Atrapa helados</h2>
+            <p>Mové el vasito y atrapá la mayor cantidad posible.</p>
+          </div>
+        </div>
+
+        <article class="card game-card">
+          <div class="game-info">
+            <span>Puntos: <b id="iceScore">0</b></span>
+            <span>Tiempo: <b id="iceTime">30</b>s</span>
+          </div>
+          <canvas id="iceGame" width="420" height="520"></canvas>
+          <div class="game-actions">
+            <button class="btn primary" onclick="startIceGame()">Empezar</button>
+            <button class="btn secondary" onclick="saveIceScore()">Guardar récord</button>
+          </div>
+          <h3>Ranking Atrapa Helados</h3>
+          <div id="iceScores" class="posts"></div>
+        </article>
+      </section>
+
+      <section id="peliculas" class="section">
+        <div class="section-title">
+          <span>🎬</span>
+          <div>
+            <h2>Adivinar películas</h2>
+            <p>Emojis, respuestas y puntos.</p>
+          </div>
+        </div>
+
+        <article class="card">
+          <button class="btn primary" onclick="newMovie()">Nueva película</button>
+          <div id="movieEmoji" class="big-result">🚢❄️💔</div>
+          <button class="link-btn" onclick="showMovieAnswer()">Ver respuesta</button>
+          <div id="movieAnswer" class="result hidden"></div>
+
+          <form class="post-form" data-section="peliculas" data-points="10">
+            <input type="hidden" name="challenge" id="movieInput">
+            <textarea name="text" placeholder="Tu respuesta..."></textarea>
+            <button class="btn small" type="submit">Guardar respuesta</button>
+          </form>
+
+          <h3>Respuestas de películas</h3>
+          <div id="posts-peliculas" class="posts"></div>
+        </article>
+      </section>
+
+      <section id="conocerse" class="section">
+        <div class="section-title">
+          <span>💭</span>
+          <div>
+            <h2>¿Quién conoce mejor al otro?</h2>
+            <p>Preguntas para responder los dos.</p>
+          </div>
+        </div>
+
+        <article class="card">
+          <button class="btn primary" onclick="newKnowQuestion()">Nueva pregunta</button>
+          <div id="knowQuestion" class="big-result">¿Qué comida elegiría la otra persona?</div>
+
+          <form class="post-form" data-section="conocerse" data-points="10">
+            <input type="hidden" name="challenge" id="knowInput">
+            <textarea name="text" placeholder="Tu respuesta..."></textarea>
+            <button class="btn small" type="submit">Guardar respuesta</button>
+          </form>
+
+          <h3>Respuestas</h3>
+          <div id="posts-conocerse" class="posts"></div>
+        </article>
+      </section>
+
+      <section id="galeria" class="section">
+        <div class="section-title">
+          <span>🖼️</span>
+          <div>
+            <h2>Galería</h2>
+            <p>Todo lo que fueron subiendo.</p>
+          </div>
+        </div>
+        <article class="card">
+          <button class="btn secondary" onclick="loadAll()">Actualizar todo</button>
+          <div id="gallery" class="gallery"></div>
+        </article>
+      </section>
+    </main>
+
+    <footer>Hecho por Eze · Laura vs Eze 🏆</footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
